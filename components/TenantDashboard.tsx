@@ -1,6 +1,6 @@
 'use client'
 
-import { TenantReport, MetricPoint } from '@/app/admin/page'
+import { TenantReport, MetricPoint } from '@/lib/reportApi'
 import { useEffect, useRef } from 'react'
 
 interface TenantDashboardProps {
