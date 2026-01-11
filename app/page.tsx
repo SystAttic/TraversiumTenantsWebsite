@@ -17,8 +17,6 @@ export interface Tenant {
   isActive: boolean
 }
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080'
-
 export default function Home() {
   const [tenants, setTenants] = useState<Tenant[]>([])
   const [loading, setLoading] = useState(true)
@@ -28,9 +26,10 @@ export default function Home() {
   const fetchTenants = async () => {
     try {
       setLoading(true)
-      const response = await fetch(`${API_BASE_URL}/rest/v1/tenants`)
+      const response = await fetch('/api/tenants')
       if (!response.ok) {
-        throw new Error('Failed to fetch tenants')
+        const errorData = await response.json().catch(() => ({ error: 'Failed to fetch tenants' }))
+        throw new Error(errorData.error || 'Failed to fetch tenants')
       }
       const data = await response.json()
       setTenants(data)

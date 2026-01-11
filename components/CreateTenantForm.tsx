@@ -2,8 +2,6 @@
 
 import { useState } from 'react'
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080'
-
 interface CreateTenantFormProps {
   onSuccess: () => void
   onCancel: () => void
@@ -23,7 +21,7 @@ export default function CreateTenantForm({ onSuccess, onCancel }: CreateTenantFo
     setError(null)
 
     try {
-      const response = await fetch(`${API_BASE_URL}/rest/v1/tenants`, {
+      const response = await fetch('/api/tenants', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -32,8 +30,8 @@ export default function CreateTenantForm({ onSuccess, onCancel }: CreateTenantFo
       })
 
       if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.message || 'Failed to create tenant')
+        const errorData = await response.json().catch(() => ({ error: 'Failed to create tenant' }))
+        throw new Error(errorData.error || errorData.message || 'Failed to create tenant')
       }
 
       const tenant = await response.json()

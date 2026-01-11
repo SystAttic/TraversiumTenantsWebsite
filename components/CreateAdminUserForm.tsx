@@ -2,8 +2,6 @@
 
 import { useState } from 'react'
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080'
-
 interface CreateAdminUserFormProps {
   tenantId: string
   tenantName: string
@@ -26,7 +24,7 @@ export default function CreateAdminUserForm({ tenantId, tenantName, onSuccess, o
     setError(null)
 
     try {
-      const response = await fetch(`${API_BASE_URL}/rest/v1/tenants/${tenantId}/admin`, {
+      const response = await fetch(`/api/tenants/${tenantId}/admin`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -35,8 +33,8 @@ export default function CreateAdminUserForm({ tenantId, tenantName, onSuccess, o
       })
 
       if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.message || 'Failed to create admin user')
+        const errorData = await response.json().catch(() => ({ error: 'Failed to create admin user' }))
+        throw new Error(errorData.error || errorData.message || 'Failed to create admin user')
       }
 
       const result = await response.json()

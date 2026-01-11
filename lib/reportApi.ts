@@ -1,5 +1,3 @@
-const REPORT_API_BASE_URL = process.env.NEXT_PUBLIC_REPORT_API_BASE_URL || 'http://localhost:8084'
-
 export interface TenantReport {
   tenantId: string
   totalUsers: number
@@ -111,84 +109,66 @@ export interface CostBreakdown {
 }
 
 export async function getTenantReport(tenantId: string, days: number = 30): Promise<TenantReport> {
-  const response = await fetch(`${REPORT_API_BASE_URL}/rest/v1/reports/tenant/${tenantId}?days=${days}`, {
-    headers: {
-      'X-Tenant-Id': tenantId,
-    },
-  })
+  const response = await fetch(`/api/reports/tenant/${tenantId}?days=${days}`)
   
   if (!response.ok) {
-    throw new Error(`Failed to fetch tenant report: ${response.statusText}`)
+    const errorData = await response.json().catch(() => ({ error: 'Failed to fetch tenant report' }))
+    throw new Error(errorData.error || `Failed to fetch tenant report: ${response.statusText}`)
   }
   
   return response.json()
 }
 
 export async function getUserMetrics(tenantId: string, days: number = 30): Promise<UserMetrics> {
-  const response = await fetch(`${REPORT_API_BASE_URL}/rest/v1/reports/tenant/${tenantId}/users?days=${days}`, {
-    headers: {
-      'X-Tenant-Id': tenantId,
-    },
-  })
+  const response = await fetch(`/api/reports/tenant/${tenantId}/users?days=${days}`)
   
   if (!response.ok) {
-    throw new Error(`Failed to fetch user metrics: ${response.statusText}`)
+    const errorData = await response.json().catch(() => ({ error: 'Failed to fetch user metrics' }))
+    throw new Error(errorData.error || `Failed to fetch user metrics: ${response.statusText}`)
   }
   
   return response.json()
 }
 
 export async function getTripMetrics(tenantId: string, days: number = 30): Promise<TripMetrics> {
-  const response = await fetch(`${REPORT_API_BASE_URL}/rest/v1/reports/tenant/${tenantId}/trips?days=${days}`, {
-    headers: {
-      'X-Tenant-Id': tenantId,
-    },
-  })
+  const response = await fetch(`/api/reports/tenant/${tenantId}/trips?days=${days}`)
   
   if (!response.ok) {
-    throw new Error(`Failed to fetch trip metrics: ${response.statusText}`)
+    const errorData = await response.json().catch(() => ({ error: 'Failed to fetch trip metrics' }))
+    throw new Error(errorData.error || `Failed to fetch trip metrics: ${response.statusText}`)
   }
   
   return response.json()
 }
 
 export async function getMediaMetrics(tenantId: string, days: number = 30): Promise<MediaMetrics> {
-  const response = await fetch(`${REPORT_API_BASE_URL}/rest/v1/reports/tenant/${tenantId}/media?days=${days}`, {
-    headers: {
-      'X-Tenant-Id': tenantId,
-    },
-  })
+  const response = await fetch(`/api/reports/tenant/${tenantId}/media?days=${days}`)
   
   if (!response.ok) {
-    throw new Error(`Failed to fetch media metrics: ${response.statusText}`)
+    const errorData = await response.json().catch(() => ({ error: 'Failed to fetch media metrics' }))
+    throw new Error(errorData.error || `Failed to fetch media metrics: ${response.statusText}`)
   }
   
   return response.json()
 }
 
 export async function getSocialMetrics(tenantId: string, days: number = 30): Promise<SocialMetrics> {
-  const response = await fetch(`${REPORT_API_BASE_URL}/rest/v1/reports/tenant/${tenantId}/social?days=${days}`, {
-    headers: {
-      'X-Tenant-Id': tenantId,
-    },
-  })
+  const response = await fetch(`/api/reports/tenant/${tenantId}/social?days=${days}`)
   
   if (!response.ok) {
-    throw new Error(`Failed to fetch social metrics: ${response.statusText}`)
+    const errorData = await response.json().catch(() => ({ error: 'Failed to fetch social metrics' }))
+    throw new Error(errorData.error || `Failed to fetch social metrics: ${response.statusText}`)
   }
   
   return response.json()
 }
 
 export async function getPricing(tenantId: string): Promise<Pricing> {
-  const response = await fetch(`${REPORT_API_BASE_URL}/rest/v1/reports/tenant/${tenantId}/pricing`, {
-    headers: {
-      'X-Tenant-Id': tenantId,
-    },
-  })
+  const response = await fetch(`/api/reports/tenant/${tenantId}/pricing`)
   
   if (!response.ok) {
-    throw new Error(`Failed to fetch pricing: ${response.statusText}`)
+    const errorData = await response.json().catch(() => ({ error: 'Failed to fetch pricing' }))
+    throw new Error(errorData.error || `Failed to fetch pricing: ${response.statusText}`)
   }
   
   return response.json()
